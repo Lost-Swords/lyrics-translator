@@ -79,7 +79,7 @@ const showPasteModal = ref(false);//歌词粘贴框
 const inputLyrics = ref('');
 
 //递增歌词数组，并聚焦到下一个
-async function lyricListAdd(value: { ctrlKey: any; code: string; target: { getAttribute: (arg0: any) => any; parentElement: any; } | null; srcElement: HTMLInputElement; }) {
+async function lyricListAdd(value: { ctrlKey: any; code: string; target: HTMLElement; srcElement: HTMLInputElement; }) {
   if (!value.ctrlKey || value.code !== 'Enter') {
     return;
   }

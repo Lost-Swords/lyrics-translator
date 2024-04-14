@@ -10,7 +10,7 @@ function textDownload(name: string,...text: any[]) {
       a.click();
 }
 
-function findRootNodeWithElement(element: { getAttribute: (arg0: any) => any; parentElement: any; } | null, targetTagName: string) {
+function findRootNodeWithElement(element: HTMLElement, targetTagName: string) {
   // 从当前元素开始向上遍历DOM树
   if (element !== null && element.getAttribute(targetTagName)) {
     return element.getAttribute(targetTagName);
