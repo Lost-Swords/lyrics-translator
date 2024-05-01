@@ -29,7 +29,7 @@ const   baiduTranslate : TranslateMethod  = {
     const salt = Math.random()
     const sign = Md5.hashStr(appid + words + salt + appSected);
     const options = {
-      url: '/'+param.name,
+      url: param.url,
       method: "get",
       params: {
         q: words.toString(),
@@ -57,7 +57,7 @@ const   baiduTranslate : TranslateMethod  = {
 const  deeplTranslate : TranslateMethod  = {
   method :async (param ,words)  => {
     const options = {
-      url: '/'+param.name,
+      url: param.url,
       method: "get",
       headers: {
         'Cache-Control': 'no-cache',
