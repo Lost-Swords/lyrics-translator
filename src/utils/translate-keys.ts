@@ -26,5 +26,5 @@ const deepl:TrasnlateParam  = {
 
 
 export const translateApis:TranslateApiMap = {
-	baidu,deepl
+	baidu
 }
