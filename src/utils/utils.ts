@@ -10,15 +10,16 @@ function textDownload(name: string,...text: any[]) {
       a.click();
 }
 
-function findRootNodeWithElement(element: HTMLElement, targetTagName: string) {
+function findTagInElement(element: HTMLElement , targetTagName: string) {
   // 从当前元素开始向上遍历DOM树
   if (element !== null && element.getAttribute(targetTagName)) {
     return element.getAttribute(targetTagName);
   } else if (element?.parentElement) {
     // 如果找到包含目标元素的根节点，则返回该根节点；否则返回null
-    return findRootNodeWithElement(element.parentElement, targetTagName);
+    return findTagInElement(element.parentElement, targetTagName);
   }
   return null
 }
 
-export {textDownload,findRootNodeWithElement}
+
+export {textDownload,findTagInElement}
