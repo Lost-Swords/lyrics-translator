@@ -1,6 +1,6 @@
 # lyrics-translator
 
-This template should help get you started developing with Vue 3 in Vite.
+a web tools for transloting lyrics. 
 
 ## Recommended IDE Setup
 
