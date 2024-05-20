@@ -64,7 +64,7 @@ const y = ref(0)
 const showPopover = ref(false)
 const translateResult = ref('')
 const translateApiName = ref(null)
-const translateApiList : Ref<Array<Object>> = ref([{label:"选择划词翻译",value:null}])
+const translateApiList : Ref<Array<Object>> = ref([{label:"关闭划词翻译",value:null}])
 let handleLock = false
 
 
