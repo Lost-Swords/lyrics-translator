@@ -21,7 +21,7 @@ const errorMap: {[k: string]: string} = {
 const  from = "auto";
 const  to = "zh";
 axiosRetry(axios, { retries: 3 });
-
+axios.defaults.baseURL = "/backend"
 const   baiduTranslate : TranslateMethod  = {
   method :async (param ,words)  => {
     const appid = param.appId;

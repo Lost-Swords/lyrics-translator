@@ -1,0 +1,10 @@
+{
+	"outputDirectory": "docs",
+  "rewrites": [
+    {
+      "source": "/backend/(.*)",
+      "destination": "/api/proxy"
+    }
+
+  ]
+ }

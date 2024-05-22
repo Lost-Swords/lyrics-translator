@@ -3,35 +3,26 @@
     <n-layout position="absolute">
       <n-layout-header>
         <n-space justify="center" :align="'center'" :size="50">
-          <n-button size="large" @click="showPasteModal = true">粘贴文本</n-button>
-          <n-upload ref="upload" :default-upload="false" accept=".txt" @change="uploadText" :show-file-list="false"
-            v-model:file-list="fileList">
-            <n-button size="large">导入文本</n-button>
-          </n-upload>
+          <n-button size="large" @click="showPasteModal = true">导入文本</n-button>
           <n-button @click="handleExportText" size="large">导出文本</n-button>
           <n-button @click="openLyricsEditor" size="large">歌词制作器</n-button>
           <n-switch size="large" v-model:value="isTranslate">
             <template #checked> 翻译 </template>
             <template #unchecked> 歌词 </template>
           </n-switch>
-          <n-select style="width: 150px" v-model:value="translateApiName"   placeholder="选择划词翻译" :options="translateApiList" />
+          <n-select class="select" v-model:value="translateApiName"   placeholder="选择划词翻译" :options="translateApiList" />
         </n-space>
       </n-layout-header>
-      <n-layout-content style="padding-top: 5%; width: 70%; margin: auto">
+      <n-layout-content class="content" >
         <n-dynamic-input v-if="!isTranslate" @keyup="addLyricList" @select="handleTextSelected"
           v-model:value="lyricList" placeholder="请输入歌词" :min="1" />
         <n-dynamic-input v-else v-model:value="lyricList" :min="1">
           <template #default="{ index, value }">
-            <div style="
-                display: flex;
-                align-items: center;
-                flex-direction: column;
-                width: 100%;
-              ">
-              <p v-if="lyricList[index]" style="width: 100%">
+            <div class="dynamic-input" >
+              <p v-if="lyricList[index]">
                 {{ lyricList[index] }}
               </p>
-              <p v-else style="width: 100%; color: #f70808">该行无文本</p>
+              <p v-else class="empty-row" >该行无文本</p>
               <br />
               <n-input v-model:value="translateList[index]" @keyup="focusNextInput" placeholder="请输入翻译" type="text" />
             </div>
@@ -40,15 +31,19 @@
       </n-layout-content>
     </n-layout>
   </n-space>
+
+
   <n-modal v-model:show="showPasteModal" preset="dialog" title="粘贴歌词文本" positive-text="确认" negative-text="取消"
     @positive-click="submitPaste">
-    <n-input v-model:value="inputLyrics" type="textarea" placeholder="请在这里粘贴歌词" style="height: 200px" />
+    <n-input class="lyric-input" v-model:value="inputLyrics" type="textarea" placeholder="请在这里粘贴歌词，或者直接拖拽歌词文件到此处" style="height: 200px" />
+    <drag-upload @drop-file="handleDragUpload" ></drag-upload>
   </n-modal>
   <n-popover :show="showPopover" :x="x" :y="y" trigger="manual" v-text="translateResult" />
 </template>
 <script setup lang="ts">
 import { textDownload, findTagInElement } from '../utils/utils'
 import { translateUtil, translateApis } from '../utils/translate-util'
+import dragUpload from './DragUpload.vue'
 import { useMessage, useDialog } from 'naive-ui'
 const lyricList = ref([''])
 const translateList = ref([''])
@@ -64,7 +59,7 @@ const y = ref(0)
 const showPopover = ref(false)
 const translateResult = ref('')
 const translateApiName = ref(null)
-const translateApiList : Ref<Array<Object>> = ref([{label:"选择划词翻译",value:null}])
+const translateApiList : Ref<Array<Object>> = ref([{label:"关闭划词翻译",value:null}])
 let handleLock = false
 
 
@@ -99,6 +94,14 @@ async function addLyricList(value: {
       break
     }
   }
+}
+
+//拖拽歌词文本
+function handleDragUpload(e : File) {
+  let options = { file:{ file: e }}
+  uploadText (options)
+  inputLyrics.value = ''
+  showPasteModal.value = false
 }
 
 // 导入歌词
@@ -227,6 +230,34 @@ h3 {
   text-align: center;
 }
 
+.content {
+  padding-top: 5%;
+  width: 70%;
+  margin: auto
+}
+
+.select {
+  width: 150px;
+}
+
+.dynamic-input {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.dynamic-input p {
+  width: 100%;
+}
+
+.empty-row {
+  color: #f70808
+}
+
+.lyric-input {
+  height: 200px
+}
 @media (min-width: 1024px) {
 
   .greetings h1,

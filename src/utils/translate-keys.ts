@@ -3,7 +3,8 @@ export interface TrasnlateParam  {
 	name: string
 	appId?: string;
 	key: string;
-	url: string
+	host: string;
+	url: string;
 }
 
 
@@ -15,13 +16,15 @@ const baidu:TrasnlateParam  = {
 	name: 'baidu',
 	appId: '20200730000529751',
 	key: 'lkjooeJUgW0spOctSbZb',
-	url: 'https://fanyi-api.baidu.com/api/trans/vip/translate'
+	host: 'https://fanyi-api.baidu.com',
+	url: '/api/trans/vip/translate'
 }
 
 const deepl:TrasnlateParam  = {
 	name: 'deepl',
 	key: 'a0d77a3d-878d-455f-a374-73f65979bfe2:fx',
-	url: 'https://api-free.deepl.com/v2/translate'
+	host: 'https://api-free.deepl.com',
+	url: '/v2/translate'
 }
 
 

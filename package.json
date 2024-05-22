@@ -2,7 +2,6 @@
   "name": "lyrics-translator",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
@@ -23,6 +22,7 @@
     "@types/node": "^18.19.31",
     "@vitejs/plugin-vue": "^4.5.1",
     "@vue/tsconfig": "^0.4.0",
+    "http-proxy-middleware": "^3.0.0",
     "naive-ui": "^2.34.4",
     "npm-run-all2": "^6.1.1",
     "typescript": "~5.2.0",
