@@ -48,7 +48,6 @@ import { useMessage, useDialog } from 'naive-ui'
 const lyricList = ref([''])
 const translateList = ref([''])
 const isTranslate = ref(false)
-const isUseTranslateUtil = ref(false)
 const fileList = ref([])
 const dialog = useDialog()
 const message = useMessage()
@@ -194,10 +193,10 @@ function handleMouseClick(e: MouseEvent) {
 }
 
 async function handleTextSelected(e: Event) {
+  //防止多次触发
   if (!translateApiName.value || showPopover.value || handleLock) {
     return
   }
-  //防止多次触发
   handleLock = true
   let element = e.target as HTMLInputElement
   x.value = element.getBoundingClientRect().left

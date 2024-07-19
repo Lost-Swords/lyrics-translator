@@ -1,12 +1,29 @@
 import { Md5 } from "ts-md5";
 import axios from 'axios';
-import { type TrasnlateParam,translateApis } from './translate-keys';
 import axiosRetry from 'axios-retry';
+import translateKeys  from './translate-keys.json'
+export interface TrasnlateParam  {
+	name: string
+	appId?: string;
+	key: string;
+	host: string;
+	url: string;
+}
+
+
+interface TranslateApiMap  {
+	[k: string]: TrasnlateParam
+}
+
+
 
 interface TranslateMethod {
    method(param : TrasnlateParam,words: string) : Promise<string>
    param : TrasnlateParam
 }
+
+
+export const translateApis:TranslateApiMap = translateKeys
 
 
 const errorMap: {[k: string]: string} = {
@@ -89,4 +106,4 @@ export const translateUtil = async (type: TrasnlateParam,words: string) : Promis
   return translateMethods[type.name].method(type,words)
 };
 
-export { type TrasnlateParam,translateApis  } from './translate-keys'
+
