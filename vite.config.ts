@@ -1,14 +1,14 @@
 import { fileURLToPath, URL } from 'node:url'
-import  translateApis  from './src/utils/translate-keys.json'
+import  translateKeys  from './src/utils/translate-keys.json'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 
-//动态添加proxys代理
+// 动态添加proxys代理
 let proxys :  { [key: string]: any } = {}
-Object.entries(translateApis).forEach(([k, v]) => {
+Object.entries(translateKeys).forEach(([k, v]) => {
   proxys[`/${v.name}`] = {
     target: v.url,
     changeOrigin: true,

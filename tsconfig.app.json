@@ -1,9 +1,23 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "types/**/*.d.ts",
+    ".src/**/*",
+    "src/**/*",
+    "src/**/*.json",
+    "src/**/*.ts",
+    "types/**/*.d.ts"
+  ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
+    "resolveJsonModule": true, // 启用导入 JSON 文件功能
     "composite": true,
+    "typeRoots": ["./types"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
     "noEmit": true,
     "baseUrl": ".",
     "paths": {

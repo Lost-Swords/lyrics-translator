@@ -2,28 +2,17 @@ import { Md5 } from "ts-md5";
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 import translateKeys  from './translate-keys.json'
-export interface TrasnlateParam  {
-	name: string
-	appId?: string;
-	key: string;
-	host: string;
-	url: string;
-}
 
 
-interface TranslateApiMap  {
-	[k: string]: TrasnlateParam
+
+
+interface TranslateApi extends TrasnlateParam  {
+	translate(words: string) : Promise<string>
 }
 
 
 
-interface TranslateMethod {
-   method(param : TrasnlateParam,words: string) : Promise<string>
-   param : TrasnlateParam
-}
 
-
-export const translateApis:TranslateApiMap = translateKeys
 
 
 const errorMap: {[k: string]: string} = {
@@ -39,14 +28,14 @@ const  from = "auto";
 const  to = "zh";
 axiosRetry(axios, { retries: 3 });
 axios.defaults.baseURL = "/backend"
-const   baiduTranslate : TranslateMethod  = {
-  method :async (param ,words)  => {
-    const appid = param.appId;
-    const appSected = param.key;
+const   baiduTranslate : TranslateApi  = {
+  translate: async function (words)   {
+    const appid = this.appId??'';
+    const appSected = this.key;
     const salt = Math.random()
     const sign = Md5.hashStr(appid + words + salt + appSected);
     const options = {
-      url: param.url,
+      url: this.url,
       method: "get",
       params: {
         q: words.toString(),
@@ -68,20 +57,20 @@ const   baiduTranslate : TranslateMethod  = {
       return "网络异常"
     }
   },
-  param: translateApis.baidu
+  ...translateKeys.baidu
 }
 
-const  deeplTranslate : TranslateMethod  = {
-  method :async (param ,words)  => {
+const  deeplTranslate : TranslateApi  = {
+  translate: async function (words) {
     const options = {
-      url: param.url,
+      url: this.url,
       method: "get",
       headers: {
         'Cache-Control': 'no-cache',
         'Access-Control-Allow-Origin': '*'
       },
       params: {
-        "auth_key": param.key,
+        "auth_key": this.key,
         "text": words.toString(),
         "target_lang":"ZH",
       }
@@ -93,17 +82,9 @@ const  deeplTranslate : TranslateMethod  = {
       return "网络异常"
     }
   },
-  param: translateApis.deepl
+  ...translateKeys.deepl
 }
 
-const translateMethods: {[k: string]: TranslateMethod} = {
-  [baiduTranslate.param.name] : baiduTranslate,
-  [deeplTranslate.param.name] : deeplTranslate
-}
+const translateApis: TranslateApi[] = [baiduTranslate,deeplTranslate];
 
-
-export const translateUtil = async (type: TrasnlateParam,words: string) : Promise<string> => {
-  return translateMethods[type.name].method(type,words)
-};
-
-
+export default  translateApis;

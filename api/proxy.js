@@ -1,7 +1,7 @@
 // api/proxy.js
 // 该服务为 vercel serve跨域处理
 import { createProxyMiddleware } from 'http-proxy-middleware'
-import { translateApis } from '../src/utils/translate-keys.json'
+import translateApis  from '../src/utils/translate-keys.json'
 
 module.exports = (req, res) => {
     let target = ''

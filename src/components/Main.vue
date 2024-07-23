@@ -42,7 +42,7 @@
 </template>
 <script setup lang="ts">
 import { textDownload, findTagInElement } from '../utils/utils'
-import { translateUtil, translateApis } from '../utils/translate-util'
+import  translateApis  from '../utils/translate-util'
 import dragUpload from './DragUpload.vue'
 import { useMessage, useDialog } from 'naive-ui'
 const lyricList = ref([''])
@@ -60,6 +60,7 @@ const translateResult = ref('')
 const translateApiName = ref(null)
 const translateApiList : Ref<Array<Object>> = ref([{label:"关闭划词翻译",value:null}])
 let handleLock = false
+
 
 
 Object.entries(translateApis).forEach(([k, v]) => {
@@ -203,7 +204,8 @@ async function handleTextSelected(e: Event) {
   y.value = element.getBoundingClientRect().top
   showPopover.value = true
   translateResult.value = "正在翻译……"
-  translateResult.value = await translateUtil(translateApis[translateApiName.value],
+  let  translateApi = translateApis.find(i=> i.name === translateApiName.value)??translateApis[0];
+  translateResult.value = await translateApi.translate(
     element.value.substring(
       element.selectionStart as number,
       element.selectionEnd as number
