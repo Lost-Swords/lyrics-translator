@@ -1,0 +1,26 @@
+{
+  "button": {
+    "importText": "导入文本",
+    "exportText": "导出文本",
+    "lyricsEditor": "歌词制作器"
+  },
+  "change": {
+    "translate": "翻译",
+    "lyrics": "歌词"
+  },
+  "placeholder": {
+    "wordTranslate": "划词翻译",
+    "inputLyrics": "请输入歌词",
+    "inputTranslate": "请输入翻译",
+    "closeTranslate": "关闭划词翻译"
+  },
+  "text": {
+    "noText": "该行无文本"
+  },
+  "modal": {
+    "pasteLyrics": "粘贴歌词文本",
+    "ok": "确认",
+    "cancel": "取消",
+    "placeholder": "请在这里粘贴歌词，或者直接拖拽歌词文件到此页面"
+  }
+}

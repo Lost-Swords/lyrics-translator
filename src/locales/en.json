@@ -1,0 +1,26 @@
+{
+  "button": {
+    "inputText": "input text",
+    "exportText": "export text",
+    "lyricsEditor": "Lyrics Editor"
+  },
+  "switch": {
+    "translate": "translate",
+    "lyrics": "lyrics"
+  },
+  "placeholder": {
+    "wordTranslate": "word translate",
+    "inputLyrics": "Please enter lyrics",
+    "inputTranslate": "Please enter translation",
+    "closeTranslate": "close the word Translate"
+  },
+  "text": {
+    "noText": "This line has no text"
+  },
+  "modal": {
+    "pasteLyrics": "Paste lyric text",
+    "ok": "ok",
+    "cancel": "cancel",
+    "placeholder": "Please paste the lyrics here, or directly drag the lyrics file here"
+  }
+}

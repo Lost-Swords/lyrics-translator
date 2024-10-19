@@ -3,28 +3,31 @@
     <n-layout position="absolute">
       <n-layout-header>
         <n-space justify="center" :align="'center'" :size="50">
-          <n-button size="large" @click="showPasteModal = true">导入文本</n-button>
-          <n-button @click="handleExportText" size="large">导出文本</n-button>
-          <n-button @click="openLyricsEditor" size="large">歌词制作器</n-button>
+          <n-button size="large" @click="showPasteModal = true">{{ $t('button.importText') }}</n-button>
+          <n-button @click="handleExportText" size="large">{{ $t('button.exportText') }}</n-button>
+          <n-button @click="openLyricsEditor" size="large">{{ $t('button.lyricsEditor') }}</n-button>
           <n-switch size="large" v-model:value="isTranslate">
-            <template #checked> 翻译 </template>
-            <template #unchecked> 歌词 </template>
+            <template #checked>{{ $t('change.translate') }}</template>
+            <template #unchecked>{{ $t('change.lyrics') }}</template>
           </n-switch>
-          <n-select class="select" v-model:value="translateApiName"   placeholder="选择划词翻译" :options="translateApiList" />
+          <n-select class="select" v-model:value="translateApiName" :placeholder="$t('placeholder.wordTranslate')"
+            :options="translateApiList" />
+          <n-select class="select" v-model:value="$i18n.locale"   :options="$i18n.availableLocales.map(i => ({'label':i,'value':i }))" />
         </n-space>
       </n-layout-header>
-      <n-layout-content class="content" >
+      <n-layout-content class="content">
         <n-dynamic-input v-if="!isTranslate" @keyup="addLyricList" @select="handleTextSelected"
-          v-model:value="lyricList" placeholder="请输入歌词" :min="1" />
+          v-model:value="lyricList" :placeholder="$t('placeholder.inputLyrics')" :min="1" />
         <n-dynamic-input v-else v-model:value="lyricList" :min="1">
           <template #default="{ index, value }">
-            <div class="dynamic-input" >
+            <div class="dynamic-input">
               <p v-if="lyricList[index]">
                 {{ lyricList[index] }}
               </p>
-              <p v-else class="empty-row" >该行无文本</p>
+              <p v-else class="empty-row">{{ $t('text.noText') }}</p>
               <br />
-              <n-input v-model:value="translateList[index]" @keyup="focusNextInput" placeholder="请输入翻译" type="text" />
+              <n-input v-model:value="translateList[index]" @keyup="focusNextInput"
+                :placeholder="$t('placeholder.inputTranslate')" type="text" />
             </div>
           </template>
         </n-dynamic-input>
@@ -33,18 +36,21 @@
   </n-space>
 
 
-  <n-modal v-model:show="showPasteModal" preset="dialog" title="粘贴歌词文本" positive-text="确认" negative-text="取消"
-    @positive-click="submitPaste">
-    <n-input class="lyric-input" v-model:value="inputLyrics" type="textarea" placeholder="请在这里粘贴歌词，或者直接拖拽歌词文件到此处" style="height: 200px" />
-    <drag-upload @drop-file="handleDragUpload" ></drag-upload>
+  <n-modal v-model:show="showPasteModal" preset="dialog" :title="$t('modal.pasteLyrics')"
+    :positive-text="$t('modal.ok')" :negative-text="$t('modal.cancel')" @positive-click="submitPaste">
+    <n-input class="lyric-input" v-model:value="inputLyrics" type="textarea" :placeholder="$t('modal.placeholder')"
+      style="height: 200px" />
+    <drag-upload @drop-file="handleDragUpload"></drag-upload>
   </n-modal>
   <n-popover :show="showPopover" :x="x" :y="y" trigger="manual" v-text="translateResult" />
 </template>
 <script setup lang="ts">
 import { textDownload, findTagInElement } from '../utils/utils'
-import  translateApis  from '../utils/translate-util'
+import translateApis from '../utils/translate-util'
 import dragUpload from './DragUpload.vue'
 import { useMessage, useDialog } from 'naive-ui'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const lyricList = ref([''])
 const translateList = ref([''])
 const isTranslate = ref(false)
@@ -58,15 +64,15 @@ const y = ref(0)
 const showPopover = ref(false)
 const translateResult = ref('')
 const translateApiName = ref(null)
-const translateApiList : Ref<Array<Object>> = ref([{label:"关闭划词翻译",value:null}])
+const translateApiList: Ref<Array<Object>> = ref([{ label: t("placeholder.closeTranslate"), value: null }])
 let handleLock = false
 
 
-
+//遍历添加翻译api
 Object.entries(translateApis).forEach(([k, v]) => {
   translateApiList.value.push({
-    label:v.name,
-    value:v.name
+    label: v.name,
+    value: v.name
   })
 });
 
@@ -97,9 +103,9 @@ async function addLyricList(value: {
 }
 
 //拖拽歌词文本
-function handleDragUpload(e : File) {
-  let options = { file:{ file: e }}
-  uploadText (options)
+function handleDragUpload(e: File) {
+  let options = { file: { file: e } }
+  uploadText(options)
   inputLyrics.value = ''
   showPasteModal.value = false
 }
@@ -204,7 +210,7 @@ async function handleTextSelected(e: Event) {
   y.value = element.getBoundingClientRect().top
   showPopover.value = true
   translateResult.value = "正在翻译……"
-  let  translateApi = translateApis.find(i=> i.name === translateApiName.value)??translateApis[0];
+  let translateApi = translateApis.find(i => i.name === translateApiName.value) ?? translateApis[0];
   translateResult.value = await translateApi.translate(
     element.value.substring(
       element.selectionStart as number,
@@ -259,6 +265,7 @@ h3 {
 .lyric-input {
   height: 200px
 }
+
 @media (min-width: 1024px) {
 
   .greetings h1,
